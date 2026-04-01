@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:praktikum_flutter/detail_profile.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: DetailProfile(),
     );
   }
 }
@@ -128,6 +129,25 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: _decrementCounter,
+                  child: Icon(Icons.remove),
+                ),
+                SizedBox(width: 8),
+                ElevatedButton(
+                  onPressed: _resetCounter,
+                  child: Icon(Icons.refresh),
+                ),
+                SizedBox(width: 8),
+                ElevatedButton(
+                  onPressed: _incrementCounter,
+                  child: Icon(Icons.add),
+                ),
+              ],
             ),
           ],
         ),
