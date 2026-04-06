@@ -11,13 +11,34 @@ class DetailProfile extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              margin: EdgeInsets.all(16),
-              child: CircleAvatar(
-                radius: 80,
-                backgroundImage: NetworkImage(
-                  'https://static.vecteezy.com/system/resources/thumbnails/050/393/628/small/cute-curious-gray-and-white-kitten-in-a-long-shot-photo.jpg',
-                ),
+            SizedBox(
+              height: 280,
+              child: Stack(
+                alignment: Alignment.topCenter,
+                children: [
+                  Container(
+                    height: 200,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/image/cover.jpeg'),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 90,
+                    child: Container(
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.all(16),
+                      child: CircleAvatar(
+                        radius: 80,
+                        backgroundImage: NetworkImage(
+                          'https://static.vecteezy.com/system/resources/thumbnails/050/393/628/small/cute-curious-gray-and-white-kitten-in-a-long-shot-photo.jpg',
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
             Text(
@@ -38,11 +59,19 @@ class DetailProfile extends StatelessWidget {
                 style: TextStyle(fontSize: 16),
               ),
             ),
+            SizedBox(height: 8),
             ElevatedButton(
               onPressed: () {
                 Fluttertoast.showToast(msg: "Button ini belum memiliki fungsi");
               },
               child: Text("Klik Saya"),
+            ),
+            SizedBox(height: 8),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Back to Home'),
             ),
           ],
         ),

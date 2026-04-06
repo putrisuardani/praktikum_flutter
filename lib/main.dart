@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:praktikum_flutter/detail_profile.dart';
+import 'package:praktikum_flutter/list_profile.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: DetailProfile(),
+      home: ListProfile(),
     );
   }
 }
@@ -148,6 +149,16 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Icon(Icons.add),
                 ),
               ],
+            ),
+            SizedBox(height: 8),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => DetailProfile()),
+                );
+              },
+              child: Text('Go to Detail Profile'),
             ),
           ],
         ),
