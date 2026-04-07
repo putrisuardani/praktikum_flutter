@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:praktikum_flutter/detail_profile.dart';
+import 'package:praktikum_flutter/models/profile.dart';
+import 'package:praktikum_flutter/screens/detail_profile.dart';
+import 'package:praktikum_flutter/screens/edit_profile.dart';
+import 'package:praktikum_flutter/screens/list_profile.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,7 +34,7 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: ListProfile(),
     );
   }
 }
@@ -166,7 +169,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => DetailProfile(nama: nama),
+                    builder: (context) => DetailProfile(
+                      profile: Profile(id: 0, name: nama, bio: "Developer"),
+                    ),
                   ),
                 );
               },

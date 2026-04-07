@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:praktikum_flutter/models/profile.dart';
+import 'package:praktikum_flutter/screens/edit_profile.dart';
 
-class DetailProfile extends StatelessWidget {
-  const DetailProfile({super.key, required this.nama});
+class DetailProfile extends StatefulWidget {
+  const DetailProfile({super.key, required this.profile});
 
-  final String nama;
+  final Profile profile;
 
+  @override
+  State<DetailProfile> createState() => _DetailProfileState();
+}
+
+class _DetailProfileState extends State<DetailProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,12 +47,12 @@ class DetailProfile extends StatelessWidget {
               ),
             ),
             Text(
-              nama,
+              widget.profile.name,
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 8),
             Text(
-              '199404112022032022',
+              widget.profile.bio,
               style: TextStyle(fontSize: 18, color: Colors.grey[600]),
             ),
             SizedBox(height: 16),
@@ -68,6 +75,25 @@ class DetailProfile extends StatelessWidget {
                 Navigator.pop(context);
               },
               child: Text('Go Back'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final Profile? updatedProfile = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditProfile(profile: widget.profile),
+                  ),
+                );
+
+                if (updatedProfile != null) {
+                  setState(() {
+                    widget.profile.name = updatedProfile.name;
+                    widget.profile.bio = updatedProfile.bio;
+                  });
+                  Fluttertoast.showToast(msg: "Profile berhasil diperbarui");
+                }
+              },
+              child: Text('Edit Profile'),
             ),
           ],
         ),
