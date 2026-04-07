@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: DetailProfile(nama: "Luh Gede Putri Suardani"),
+      home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
