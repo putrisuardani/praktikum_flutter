@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class DetailProfile extends StatelessWidget {
-  const DetailProfile({super.key});
+  DetailProfile({super.key, required this.nama});
+
+  final String nama;
 
   @override
   Widget build(BuildContext context) {
@@ -11,17 +13,34 @@ class DetailProfile extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              margin: EdgeInsets.all(16),
-              child: CircleAvatar(
-                radius: 80,
-                backgroundImage: NetworkImage(
-                  'https://static.vecteezy.com/system/resources/thumbnails/050/393/628/small/cute-curious-gray-and-white-kitten-in-a-long-shot-photo.jpg',
-                ),
+            SizedBox(
+              height: 300,
+              child: Stack(
+                alignment: Alignment.topCenter,
+                children: [
+                  Container(
+                    height: 200,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/images/background.jpg'),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 110,
+                    child: CircleAvatar(
+                      radius: 80,
+                      backgroundImage: NetworkImage(
+                        'https://static.vecteezy.com/system/resources/thumbnails/050/393/628/small/cute-curious-gray-and-white-kitten-in-a-long-shot-photo.jpg',
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
             Text(
-              'Luh Gede Putri Suardani',
+              nama,
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 8),
@@ -43,6 +62,12 @@ class DetailProfile extends StatelessWidget {
                 Fluttertoast.showToast(msg: "Button ini belum memiliki fungsi");
               },
               child: Text("Klik Saya"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Go Back'),
             ),
           ],
         ),

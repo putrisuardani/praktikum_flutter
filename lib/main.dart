@@ -31,13 +31,13 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: DetailProfile(),
+      home: DetailProfile(nama: "Luh Gede Putri Suardani"),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  MyHomePage({super.key, required this.title});
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -57,6 +57,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   int step = 22;
+  final TextEditingController namaController = TextEditingController();
 
   void _incrementCounter() {
     setState(() {
@@ -148,6 +149,28 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Icon(Icons.add),
                 ),
               ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: TextField(
+                controller: namaController,
+                decoration: InputDecoration(
+                  labelText: "Masukkan Nama",
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                String nama = namaController.text;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailProfile(nama: nama),
+                  ),
+                );
+              },
+              child: Text("Go to Detail Profile"),
             ),
           ],
         ),
