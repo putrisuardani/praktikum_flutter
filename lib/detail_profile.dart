@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class DetailProfile extends StatelessWidget {
-  DetailProfile({super.key, required this.nama});
+  const DetailProfile({super.key, required this.nama});
 
   final String nama;
 
