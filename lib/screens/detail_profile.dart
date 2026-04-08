@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:praktikum_flutter/models/profile.dart';
+import 'package:praktikum_flutter/provider/profile_provider.dart';
 import 'package:praktikum_flutter/screens/edit_profile.dart';
+import 'package:provider/provider.dart';
 
-class DetailProfile extends StatefulWidget {
-  const DetailProfile({super.key, required this.profile});
+class DetailProfile extends StatelessWidget {
+  final int profileId;
 
-  final Profile profile;
+  const DetailProfile({super.key, required this.profileId});
 
-  @override
-  State<DetailProfile> createState() => _DetailProfileState();
-}
-
-class _DetailProfileState extends State<DetailProfile> {
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<ProfileProvider>();
+
+    final profile = provider.profiles.firstWhere((p) => p.id == profileId);
+
     return Scaffold(
       appBar: AppBar(title: Text('Detail Profile')),
       body: SingleChildScrollView(
@@ -46,14 +47,28 @@ class _DetailProfileState extends State<DetailProfile> {
                 ],
               ),
             ),
-            Text(
-              widget.profile.name,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8),
-            Text(
-              widget.profile.bio,
-              style: TextStyle(fontSize: 18, color: Colors.grey[600]),
+            Consumer<ProfileProvider>(
+              builder: (context, provider, child) {
+                final profile = provider.profiles.firstWhere(
+                  (p) => p.id == profileId,
+                );
+                return Column(
+                  children: [
+                    Text(
+                      profile.name,
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      profile.bio,
+                      style: TextStyle(fontSize: 18, color: Colors.grey[600]),
+                    ),
+                  ],
+                );
+              },
             ),
             SizedBox(height: 16),
             Padding(
@@ -81,16 +96,18 @@ class _DetailProfileState extends State<DetailProfile> {
                 final Profile? updatedProfile = await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => EditProfile(profile: widget.profile),
+                    builder: (context) => EditProfile(profile: profile),
                   ),
                 );
 
                 if (updatedProfile != null) {
-                  setState(() {
-                    widget.profile.name = updatedProfile.name;
-                    widget.profile.bio = updatedProfile.bio;
-                  });
-                  Fluttertoast.showToast(msg: "Profile berhasil diperbarui");
+                  final provider = context.read<ProfileProvider>();
+                  final index = provider.profiles.indexWhere(
+                    (p) => p.id == profileId,
+                  );
+                  if (index != -1) {
+                    provider.updateProfile(index, updatedProfile);
+                  }
                 }
               },
               child: Text('Edit Profile'),

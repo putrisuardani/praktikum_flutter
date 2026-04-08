@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:praktikum_flutter/models/profile.dart';
+import 'package:praktikum_flutter/provider/profile_provider.dart';
 import 'package:praktikum_flutter/screens/detail_profile.dart';
-import 'package:praktikum_flutter/screens/edit_profile.dart';
 import 'package:praktikum_flutter/screens/list_profile.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(create: (_) => ProfileProvider(), child: MyApp()),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -162,20 +165,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   border: OutlineInputBorder(),
                 ),
               ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                String nama = namaController.text;
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => DetailProfile(
-                      profile: Profile(id: 0, name: nama, bio: "Developer"),
-                    ),
-                  ),
-                );
-              },
-              child: Text("Go to Detail Profile"),
             ),
           ],
         ),
