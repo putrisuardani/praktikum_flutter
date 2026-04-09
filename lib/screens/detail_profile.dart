@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:praktikum_flutter/models/profile.dart';
 import 'package:praktikum_flutter/provider/profile_provider.dart';
 import 'package:praktikum_flutter/screens/edit_profile.dart';
 import 'package:provider/provider.dart';
@@ -12,10 +11,6 @@ class DetailProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<ProfileProvider>();
-
-    final profile = provider.profiles.firstWhere((p) => p.id == profileId);
-
     return Scaffold(
       appBar: AppBar(title: Text('Detail Profile')),
       body: SingleChildScrollView(
