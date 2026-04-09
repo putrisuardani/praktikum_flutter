@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:praktikum_flutter/models/profile.dart';
+import 'package:praktikum_flutter/provider/profile_provider.dart';
+import 'package:provider/provider.dart';
 
 class EditProfile extends StatefulWidget {
-  const EditProfile({super.key, required this.profile});
+  const EditProfile({super.key, required this.id});
 
-  final Profile profile;
+  final int id;
 
   @override
   State<EditProfile> createState() => _EditProfileState();
@@ -18,8 +19,6 @@ class _EditProfileState extends State<EditProfile> {
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController(text: widget.profile.name);
-    _bioController = TextEditingController(text: widget.profile.bio);
   }
 
   @override
@@ -31,6 +30,11 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<ProfileProvider>(context);
+    final profile = provider.getById(widget.id);
+
+    _nameController = TextEditingController(text: profile?.name ?? '');
+    _bioController = TextEditingController(text: profile?.bio ?? '');
     return Scaffold(
       appBar: AppBar(title: Text('Edit Profile')),
       body: Padding(
@@ -50,12 +54,13 @@ class _EditProfileState extends State<EditProfile> {
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    final updatedProfile = Profile(
-                      name: _nameController.text,
-                      bio: _bioController.text,
-                      id: widget.profile.id,
+                    provider.updateProfile(
+                      widget.id,
+                      _nameController.text,
+                      _bioController.text,
                     );
-                    Navigator.pop(context, updatedProfile);
+
+                    Navigator.pop(context);
                   }
                 },
                 child: Text('Simpan'),

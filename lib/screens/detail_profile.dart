@@ -93,22 +93,12 @@ class DetailProfile extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () async {
-                final Profile? updatedProfile = await Navigator.push(
+                await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => EditProfile(profile: profile),
+                    builder: (context) => EditProfile(id: profileId),
                   ),
                 );
-
-                if (updatedProfile != null) {
-                  final provider = context.read<ProfileProvider>();
-                  final index = provider.profiles.indexWhere(
-                    (p) => p.id == profileId,
-                  );
-                  if (index != -1) {
-                    provider.updateProfile(index, updatedProfile);
-                  }
-                }
               },
               child: Text('Edit Profile'),
             ),

@@ -14,22 +14,21 @@ class ListProfile extends StatefulWidget {
 
 class _ListProfileState extends State<ListProfile> {
   List<Profile> profiles = [];
+  int counter = 0;
 
   void addItem() {
+    counter = counter + 1;
     final provider = context.read<ProfileProvider>();
-
-    int lastIndex = provider.profiles.length;
-
     final newProfile = Profile(
-      id: lastIndex + 1,
-      name: "Putri ${lastIndex + 1}",
+      id: counter,
+      name: "Putri $counter",
       bio: "Flutter Developer",
     );
     provider.addProfile(newProfile);
   }
 
-  void deleteitem(int index) {
-    context.read<ProfileProvider>().deleteProfile(index);
+  void deleteitem(int id) {
+    context.read<ProfileProvider>().deleteProfile(id);
   }
 
   @override
@@ -44,12 +43,11 @@ class _ListProfileState extends State<ListProfile> {
             itemBuilder: (context, index) {
               final profile = profiles[index];
               return Dismissible(
-                key: Key(index.toString()),
+                key: Key(profile.id.toString()),
                 onDismissed: (direction) {
-                  final deletedItem = profiles[index];
-                  deleteitem(index);
+                  deleteitem(profile.id);
                   Fluttertoast.showToast(
-                    msg: "Profile ${deletedItem.name} dihapus",
+                    msg: "Profile ${profile.name} dihapus",
                   );
                 },
                 child: ListTile(
