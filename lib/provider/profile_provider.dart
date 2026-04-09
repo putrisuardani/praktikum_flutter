@@ -1,47 +1,86 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:praktikum_flutter/helpers/db_helper.dart';
+import 'package:http/http.dart' as http;
 import '../models/profile.dart';
 
 class ProfileProvider with ChangeNotifier {
-  List<Profile> _profiles = [];
+  final String baseUrl = 'http://172.20.10.3:8000/api/profiles';
 
+  List<Profile> _profiles = [];
   List<Profile> get profiles => _profiles;
 
   Future<void> fetchProfiles() async {
     try {
-      _profiles = await DBHelper.getProfiles();
-      notifyListeners();
+      final response = await http.get(Uri.parse(baseUrl));
+
+      print("STATUS: ${response.statusCode}");
+      print("BODY: ${response.body}");
+
+      if (response.statusCode == 200) {
+        final decoded = json.decode(response.body);
+
+        List<dynamic> data;
+
+        if (decoded is List) {
+          data = decoded;
+        } else if (decoded is Map && decoded['data'] != null) {
+          data = decoded['data'];
+        } else {
+          data = [];
+        }
+
+        _profiles = data.map((json) => Profile.fromJson(json)).toList();
+        notifyListeners();
+      }
     } catch (e) {
-      debugPrint('Error fetching profiles: $e');
+      print('Error fetching profiles: $e');
     }
   }
 
-  Future<void> addProfile(Profile newProfile) async {
+  Future<void> addProfile(Profile profile) async {
     try {
-      final int insertedId = await DBHelper.insertProfile(newProfile);
-      final updatedProfile = newProfile.copyWith(id: insertedId);
-      _profiles.add(updatedProfile);
-      notifyListeners();
+      final response = await http.post(
+        Uri.parse(baseUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(profile.toJson()),
+      );
+
+      print(response.statusCode);
+      print(response.body);
+
+      if (response.statusCode == 201) {
+        await fetchProfiles();
+      }
     } catch (e) {
-      debugPrint('Error adding profile: $e');
+      print('Error adding profile: $e');
     }
   }
 
-  Future<void> updateProfile(int id, Profile profile) async {
-    final db = await DBHelper.database;
-    await db.update(
-      'tb_profile',
-      profile.toMap(),
-      where: 'id = ?',
-      whereArgs: [id],
+  Future<void> updateProfile(int id, Profile updatedProfile) async {
+    final response = await http.put(
+      Uri.parse('$baseUrl/$id'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(updatedProfile.toJson()),
     );
-    await fetchProfiles();
+
+    if (response.statusCode == 200) {
+      await fetchProfiles(); // refresh data dari server
+      notifyListeners();
+    } else {
+      throw Exception('Gagal update profil');
+    }
   }
 
   Future<void> deleteProfile(int id) async {
-    final db = await DBHelper.database;
-    await db.delete('tb_profile', where: 'id = ?', whereArgs: [id]);
-    _profiles.removeWhere((p) => p.id == id);
-    notifyListeners();
+    try {
+      final url = '$baseUrl/$id';
+      final response = await http.delete(Uri.parse(url));
+      if (response.statusCode == 200) {
+        _profiles.removeWhere((p) => p.id == id);
+        notifyListeners();
+      }
+    } catch (e) {
+      print('Error deleting profile: $e');
+    }
   }
 }

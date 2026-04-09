@@ -13,7 +13,13 @@ class ListProfile extends StatefulWidget {
 }
 
 class _ListProfileState extends State<ListProfile> {
-  List<Profile> profiles = [];
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      context.read<ProfileProvider>().fetchProfiles();
+    });
+  }
 
   void addItem() {
     final provider = context.read<ProfileProvider>();
