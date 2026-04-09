@@ -12,23 +12,20 @@ class ListProfile extends StatefulWidget {
 
 class _ListProfileState extends State<ListProfile> {
   List<Profile> profiles = [];
+  int counter = 0;
 
   void addItem() {
     setState(() {
-      int lastIndex = profiles.length;
+      counter = counter + 1;
       profiles.add(
-        Profile(
-          id: lastIndex + 1,
-          name: "Putri ${lastIndex + 1}",
-          bio: "Flutter Developer",
-        ),
+        Profile(id: counter, name: "Putri $counter", bio: "Flutter Developer"),
       );
     });
   }
 
-  void deleteitem(int index) {
+  void deleteitem(int id) {
     setState(() {
-      profiles.removeAt(index);
+      profiles.removeWhere((profile) => profile.id == id);
     });
   }
 
@@ -41,13 +38,11 @@ class _ListProfileState extends State<ListProfile> {
         itemBuilder: (context, index) {
           final profile = profiles[index];
           return Dismissible(
-            key: Key(index.toString()),
+            key: Key(profile.id.toString()),
             onDismissed: (direction) {
-              final deletedItem = profiles[index];
-              deleteitem(index);
-              Fluttertoast.showToast(
-                msg: "Profile ${deletedItem.name} dihapus",
-              );
+              final deletedItem = profile.id;
+              deleteitem(deletedItem);
+              Fluttertoast.showToast(msg: "Profile ${profile.name} dihapus");
             },
             child: ListTile(
               leading: CircleAvatar(
