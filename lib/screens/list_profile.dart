@@ -21,15 +21,15 @@ class _ListProfileState extends State<ListProfile> {
     int lastIndex = provider.profiles.length;
 
     final newProfile = Profile(
-      id: lastIndex + 1,
+      id: null,
       name: "Putri ${lastIndex + 1}",
       bio: "Flutter Developer",
     );
     provider.addProfile(newProfile);
   }
 
-  void deleteitem(int index) {
-    context.read<ProfileProvider>().deleteProfile(index);
+  void deleteitem(int id) {
+    context.read<ProfileProvider>().deleteProfile(id);
   }
 
   @override
@@ -44,10 +44,10 @@ class _ListProfileState extends State<ListProfile> {
             itemBuilder: (context, index) {
               final profile = profiles[index];
               return Dismissible(
-                key: Key(index.toString()),
+                key: Key(profile.id.toString()),
                 onDismissed: (direction) {
-                  final deletedItem = profiles[index];
-                  deleteitem(index);
+                  final deletedItem = profile;
+                  deleteitem(profile.id!);
                   Fluttertoast.showToast(
                     msg: "Profile ${deletedItem.name} dihapus",
                   );
@@ -64,7 +64,7 @@ class _ListProfileState extends State<ListProfile> {
                     context,
                     MaterialPageRoute(
                       builder: (context) =>
-                          DetailProfile(profileId: profile.id),
+                          DetailProfile(profileId: profile.id!),
                     ),
                   ),
                 ),

@@ -106,7 +106,7 @@ class DetailProfile extends StatelessWidget {
                     (p) => p.id == profileId,
                   );
                   if (index != -1) {
-                    provider.updateProfile(index, updatedProfile);
+                    provider.updateProfile(profileId, updatedProfile);
                   }
                 }
               },
