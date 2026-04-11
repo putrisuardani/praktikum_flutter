@@ -6,7 +6,7 @@ import 'package:praktikum_flutter/screens/edit_profile.dart';
 import 'package:provider/provider.dart';
 
 class DetailProfile extends StatelessWidget {
-  final int profileId;
+  final String profileId;
 
   const DetailProfile({super.key, required this.profileId});
 
@@ -14,7 +14,10 @@ class DetailProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = context.watch<ProfileProvider>();
 
-    final profile = provider.profiles.firstWhere((p) => p.id == profileId);
+    final profile = provider.profiles.firstWhere(
+      (p) => p.id == profileId,
+      orElse: () => Profile(id: profileId, name: '', bio: ''),
+    );
 
     return Scaffold(
       appBar: AppBar(title: Text('Detail Profile')),
@@ -47,28 +50,15 @@ class DetailProfile extends StatelessWidget {
                 ],
               ),
             ),
-            Consumer<ProfileProvider>(
-              builder: (context, provider, child) {
-                final profile = provider.profiles.firstWhere(
-                  (p) => p.id == profileId,
-                );
-                return Column(
-                  children: [
-                    Text(
-                      profile.name,
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      profile.bio,
-                      style: TextStyle(fontSize: 18, color: Colors.grey[600]),
-                    ),
-                  ],
-                );
-              },
+
+            Text(
+              profile.name,
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8),
+            Text(
+              profile.bio,
+              style: TextStyle(fontSize: 18, color: Colors.grey[600]),
             ),
             SizedBox(height: 16),
             Padding(
@@ -101,13 +91,10 @@ class DetailProfile extends StatelessWidget {
                 );
 
                 if (updatedProfile != null) {
-                  final provider = context.read<ProfileProvider>();
-                  final index = provider.profiles.indexWhere(
-                    (p) => p.id == profileId,
+                  context.read<ProfileProvider>().updateProfile(
+                    profileId,
+                    updatedProfile,
                   );
-                  if (index != -1) {
-                    provider.updateProfile(profileId, updatedProfile);
-                  }
                 }
               },
               child: Text('Edit Profile'),

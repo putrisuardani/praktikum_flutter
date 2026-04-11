@@ -16,9 +16,7 @@ class _ListProfileState extends State<ListProfile> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
-      context.read<ProfileProvider>().fetchProfiles();
-    });
+    Provider.of<ProfileProvider>(context, listen: false).fetchProfiles();
   }
 
   void addItem() {
@@ -34,7 +32,7 @@ class _ListProfileState extends State<ListProfile> {
     provider.addProfile(newProfile);
   }
 
-  void deleteitem(int id) {
+  void deleteitem(String id) {
     context.read<ProfileProvider>().deleteProfile(id);
   }
 
