@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:praktikum_flutter/models/profile.dart';
 
 class DetailProfile extends StatelessWidget {
-  const DetailProfile({super.key, required this.nama});
+  const DetailProfile({super.key, required this.profile});
 
-  final String nama;
+  final Profile profile;
 
   @override
   Widget build(BuildContext context) {
@@ -40,12 +41,12 @@ class DetailProfile extends StatelessWidget {
               ),
             ),
             Text(
-              nama,
+              profile.nama,
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 8),
             Text(
-              '199404112022032022',
+              profile.bio,
               style: TextStyle(fontSize: 18, color: Colors.grey[600]),
             ),
             SizedBox(height: 16),
