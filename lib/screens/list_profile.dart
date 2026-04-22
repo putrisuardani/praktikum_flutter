@@ -37,6 +37,8 @@ class _ListProfileState extends State<ListProfile> {
         itemCount: profiles.length,
         itemBuilder: (context, index) {
           final profile = profiles[index];
+          print("index: $index");
+          print("ID: ${profile.id}");
           return Dismissible(
             key: Key(profile.id.toString()),
             onDismissed: (direction) {
@@ -52,12 +54,15 @@ class _ListProfileState extends State<ListProfile> {
               ),
               title: Text(profile.name),
               subtitle: Text(profile.bio),
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => DetailProfile(profile: profile),
-                ),
-              ),
+              onTap: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailProfile(profile: profile),
+                  ),
+                );
+                setState(() {});
+              },
             ),
           );
         },

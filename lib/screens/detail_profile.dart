@@ -66,12 +66,6 @@ class _DetailProfileState extends State<DetailProfile> {
             ),
             ElevatedButton(
               onPressed: () {
-                Fluttertoast.showToast(msg: "Button ini belum memiliki fungsi");
-              },
-              child: Text("Klik Saya"),
-            ),
-            ElevatedButton(
-              onPressed: () {
                 Navigator.pop(context);
               },
               child: Text('Go Back'),
