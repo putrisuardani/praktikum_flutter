@@ -19,11 +19,14 @@ class _ListProfileState extends State<ListProfile> {
     final provider = context.read<ProfileProvider>();
 
     int lastIndex = provider.profiles.length;
+    int rand = lastIndex % 2 + 1;
 
     final newProfile = Profile(
       id: null,
       name: "Putri ${lastIndex + 1}",
       bio: "Flutter Developer",
+      coverPhoto: "assets/images/background$rand.jpg",
+      profilePhoto: "https://picsum.photos/200/300?random=${lastIndex + 1}",
     );
     provider.addProfile(newProfile);
   }
@@ -54,9 +57,7 @@ class _ListProfileState extends State<ListProfile> {
                 },
                 child: ListTile(
                   leading: CircleAvatar(
-                    backgroundImage: NetworkImage(
-                      'https://i.pravatar.cc/150?img=10',
-                    ),
+                    backgroundImage: NetworkImage(profile.profilePhoto),
                   ),
                   title: Text(profile.name),
                   subtitle: Text(profile.bio),

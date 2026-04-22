@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:praktikum_flutter/models/profile.dart';
+import 'package:praktikum_flutter/provider/profile_provider.dart';
+import 'package:provider/provider.dart';
 
 class EditProfile extends StatefulWidget {
-  const EditProfile({super.key, required this.profile});
+  const EditProfile({super.key, required this.id});
 
-  final Profile profile;
+  final int id;
 
   @override
   State<EditProfile> createState() => _EditProfileState();
@@ -14,19 +17,44 @@ class _EditProfileState extends State<EditProfile> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _nameController;
   late TextEditingController _bioController;
+  late TextEditingController _coverPhotoController;
+  late TextEditingController _profilePhotoController;
 
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController(text: widget.profile.name);
-    _bioController = TextEditingController(text: widget.profile.bio);
+
+    final provider = context.read<ProfileProvider>();
+    final profile = provider.getById(widget.id);
+
+    _nameController = TextEditingController(text: profile?.name ?? '');
+    _bioController = TextEditingController(text: profile?.bio ?? '');
+    _coverPhotoController = TextEditingController(
+      text: profile?.coverPhoto ?? '',
+    );
+    _profilePhotoController = TextEditingController(
+      text: profile?.profilePhoto ?? '',
+    );
   }
 
   @override
   void dispose() {
     _nameController.dispose();
     _bioController.dispose();
+    _coverPhotoController.dispose();
+    _profilePhotoController.dispose();
     super.dispose();
+  }
+
+  Future<void> pickCoverPhoto(ImageSource source) async {
+    final picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: source);
+
+    if (image != null) {
+      setState(() {
+        _coverPhotoController.text = image.path;
+      });
+    }
   }
 
   @override
@@ -47,13 +75,42 @@ class _EditProfileState extends State<EditProfile> {
                 controller: _bioController,
                 decoration: InputDecoration(labelText: 'Bio'),
               ),
+              TextFormField(
+                controller: _coverPhotoController,
+                readOnly: true,
+                decoration: InputDecoration(labelText: 'Cover Photo'),
+              ),
+              SizedBox(height: 8),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () => pickCoverPhoto(ImageSource.camera),
+                      child: Text('Kamera'),
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () => pickCoverPhoto(ImageSource.gallery),
+                      child: Text('Galeri'),
+                    ),
+                  ),
+                ],
+              ),
+              TextFormField(
+                controller: _profilePhotoController,
+                decoration: InputDecoration(labelText: 'Profile Photo (url)'),
+              ),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     final updatedProfile = Profile(
                       name: _nameController.text,
                       bio: _bioController.text,
-                      id: widget.profile.id,
+                      id: widget.id,
+                      coverPhoto: _coverPhotoController.text,
+                      profilePhoto: _profilePhotoController.text,
                     );
                     Navigator.pop(context, updatedProfile);
                   }

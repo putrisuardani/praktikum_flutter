@@ -15,6 +15,8 @@ class DBHelper {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, 'profiles.db');
 
+    // await deleteDatabase(path); // reset db
+
     return await openDatabase(
       path,
       version: 1,
@@ -23,7 +25,9 @@ class DBHelper {
           CREATE TABLE tb_profile (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT,
-            bio TEXT          
+            bio TEXT, 
+            coverPhoto TEXT,
+            profilePhoto TEXT        
             )
         ''');
       },

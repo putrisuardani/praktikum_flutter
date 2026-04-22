@@ -44,4 +44,10 @@ class ProfileProvider with ChangeNotifier {
     _profiles.removeWhere((p) => p.id == id);
     notifyListeners();
   }
+
+  Profile? getById(int id) {
+    return _profiles.where((p) => p.id == id).isNotEmpty
+        ? _profiles.firstWhere((p) => p.id == id)
+        : null;
+  }
 }
