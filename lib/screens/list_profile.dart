@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:praktikum_flutter/models/profile.dart';
-import 'package:praktikum_flutter/provider/profile_provider.dart';
 import 'package:praktikum_flutter/screens/detail_profile.dart';
 import 'package:provider/provider.dart';
+import 'package:praktikum_flutter/provider/profile_provider.dart';
 
 class ListProfile extends StatefulWidget {
   const ListProfile({super.key});
@@ -18,13 +18,15 @@ class _ListProfileState extends State<ListProfile> {
 
   void addItem() {
     counter = counter + 1;
-    final provider = context.read<ProfileProvider>();
+    int rand = counter % 2 + 1;
     final newProfile = Profile(
       id: counter,
       name: "Putri $counter",
       bio: "Flutter Developer",
+      coverPhoto: "assets/images/background$rand.jpg",
+      profilePhoto: "https://picsum.photos/200/300?random=$counter",
     );
-    provider.addProfile(newProfile);
+    context.read<ProfileProvider>().addProfile(newProfile);
   }
 
   void deleteitem(int id) {
@@ -52,9 +54,7 @@ class _ListProfileState extends State<ListProfile> {
                 },
                 child: ListTile(
                   leading: CircleAvatar(
-                    backgroundImage: NetworkImage(
-                      'https://i.pravatar.cc/150?img=10',
-                    ),
+                    backgroundImage: NetworkImage(profile.profilePhoto),
                   ),
                   title: Text(profile.name),
                   subtitle: Text(profile.bio),

@@ -1,8 +1,9 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import 'package:praktikum_flutter/provider/profile_provider.dart';
 import 'package:praktikum_flutter/screens/edit_profile.dart';
-import 'package:provider/provider.dart';
 
 class DetailProfile extends StatelessWidget {
   final int profileId;
@@ -11,6 +12,9 @@ class DetailProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<ProfileProvider>();
+    final profile = provider.profiles.firstWhere((p) => p.id == profileId);
+
     return Scaffold(
       appBar: AppBar(title: Text('Detail Profile')),
       body: SingleChildScrollView(
@@ -25,7 +29,9 @@ class DetailProfile extends StatelessWidget {
                     height: 200,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage('assets/images/background.jpg'),
+                        image: profile.coverPhoto.startsWith('assets/')
+                            ? AssetImage(profile.coverPhoto)
+                            : FileImage(File(profile.coverPhoto)),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -34,36 +40,20 @@ class DetailProfile extends StatelessWidget {
                     top: 110,
                     child: CircleAvatar(
                       radius: 80,
-                      backgroundImage: NetworkImage(
-                        'https://static.vecteezy.com/system/resources/thumbnails/050/393/628/small/cute-curious-gray-and-white-kitten-in-a-long-shot-photo.jpg',
-                      ),
+                      backgroundImage: NetworkImage(profile.profilePhoto),
                     ),
                   ),
                 ],
               ),
             ),
-            Consumer<ProfileProvider>(
-              builder: (context, provider, child) {
-                final profile = provider.profiles.firstWhere(
-                  (p) => p.id == profileId,
-                );
-                return Column(
-                  children: [
-                    Text(
-                      profile.name,
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      profile.bio,
-                      style: TextStyle(fontSize: 18, color: Colors.grey[600]),
-                    ),
-                  ],
-                );
-              },
+            Text(
+              profile.name,
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8),
+            Text(
+              profile.bio,
+              style: TextStyle(fontSize: 18, color: Colors.grey[600]),
             ),
             SizedBox(height: 16),
             Padding(
@@ -73,12 +63,6 @@ class DetailProfile extends StatelessWidget {
                 textAlign: TextAlign.justify,
                 style: TextStyle(fontSize: 16),
               ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Fluttertoast.showToast(msg: "Button ini belum memiliki fungsi");
-              },
-              child: Text("Klik Saya"),
             ),
             ElevatedButton(
               onPressed: () {
@@ -94,6 +78,7 @@ class DetailProfile extends StatelessWidget {
                     builder: (context) => EditProfile(id: profileId),
                   ),
                 );
+                Fluttertoast.showToast(msg: "Profile berhasil diperbarui");
               },
               child: Text('Edit Profile'),
             ),
