@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:praktikum_flutter/models/profile.dart';
@@ -29,7 +30,9 @@ class _DetailProfileState extends State<DetailProfile> {
                     height: 200,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage('assets/images/background.jpg'),
+                        image: widget.profile.coverPhoto.startsWith('assets/')
+                            ? AssetImage(widget.profile.coverPhoto)
+                            : FileImage(File(widget.profile.coverPhoto)),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -39,7 +42,7 @@ class _DetailProfileState extends State<DetailProfile> {
                     child: CircleAvatar(
                       radius: 80,
                       backgroundImage: NetworkImage(
-                        'https://static.vecteezy.com/system/resources/thumbnails/050/393/628/small/cute-curious-gray-and-white-kitten-in-a-long-shot-photo.jpg',
+                        widget.profile.profilePhoto,
                       ),
                     ),
                   ),
@@ -83,6 +86,8 @@ class _DetailProfileState extends State<DetailProfile> {
                   setState(() {
                     widget.profile.name = updatedProfile.name;
                     widget.profile.bio = updatedProfile.bio;
+                    widget.profile.coverPhoto = updatedProfile.coverPhoto;
+                    widget.profile.profilePhoto = updatedProfile.profilePhoto;
                   });
                   Fluttertoast.showToast(msg: "Profile berhasil diperbarui");
                 }

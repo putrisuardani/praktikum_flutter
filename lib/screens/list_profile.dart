@@ -17,8 +17,15 @@ class _ListProfileState extends State<ListProfile> {
   void addItem() {
     setState(() {
       counter = counter + 1;
+      int rand = counter % 2 + 1;
       profiles.add(
-        Profile(id: counter, name: "Putri $counter", bio: "Flutter Developer"),
+        Profile(
+          id: counter,
+          name: "Putri $counter",
+          bio: "Flutter Developer",
+          coverPhoto: "assets/images/background$rand.jpg",
+          profilePhoto: "https://picsum.photos/200/300?random=$counter",
+        ),
       );
     });
   }
@@ -48,9 +55,7 @@ class _ListProfileState extends State<ListProfile> {
             },
             child: ListTile(
               leading: CircleAvatar(
-                backgroundImage: NetworkImage(
-                  'https://i.pravatar.cc/150?img=10',
-                ),
+                backgroundImage: NetworkImage(profile.profilePhoto),
               ),
               title: Text(profile.name),
               subtitle: Text(profile.bio),
