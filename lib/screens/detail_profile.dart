@@ -80,7 +80,7 @@ class DetailProfile extends StatelessWidget {
                   ),
                 );
                 if (updatedProfile != null) {
-                  provider.updateProfile(profileId, updatedProfile);
+                  provider.updateProfile(updatedProfile);
                   Fluttertoast.showToast(msg: "Profile berhasil diperbarui");
                 }
               },

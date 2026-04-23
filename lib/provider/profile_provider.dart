@@ -27,13 +27,13 @@ class ProfileProvider with ChangeNotifier {
     }
   }
 
-  Future<void> updateProfile(int id, Profile profile) async {
+  Future<void> updateProfile(Profile profile) async {
     final db = await DBHelper.database;
     await db.update(
       'tb_profile',
       profile.toMap(),
       where: 'id = ?',
-      whereArgs: [id],
+      whereArgs: [profile.id],
     );
     await fetchProfiles();
   }
