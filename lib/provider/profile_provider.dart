@@ -11,22 +11,11 @@ class ProfileProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateProfile(
-    int id,
-    String name,
-    String bio,
-    String coverPhoto,
-    String profilePhoto,
-  ) {
-    final index = _profiles.indexWhere((p) => p.id == id);
+  void updateProfile(Profile updatedProfile) {
+    final index = _profiles.indexWhere((p) => p.id == updatedProfile.id);
+
     if (index != -1) {
-      _profiles[index] = Profile(
-        id: id,
-        name: name,
-        bio: bio,
-        coverPhoto: coverPhoto,
-        profilePhoto: profilePhoto,
-      );
+      _profiles[index] = updatedProfile;
       notifyListeners();
     }
   }

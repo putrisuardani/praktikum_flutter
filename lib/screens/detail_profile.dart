@@ -72,13 +72,16 @@ class DetailProfile extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () async {
-                await Navigator.push(
+                final result = await Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => EditProfile(id: profileId),
                   ),
                 );
-                Fluttertoast.showToast(msg: "Profile berhasil diperbarui");
+
+                if (result == true) {
+                  Fluttertoast.showToast(msg: "Profile berhasil diperbarui");
+                }
               },
               child: Text('Edit Profile'),
             ),

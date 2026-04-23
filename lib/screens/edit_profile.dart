@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:praktikum_flutter/models/profile.dart';
 import 'package:provider/provider.dart';
 import 'package:praktikum_flutter/provider/profile_provider.dart';
 import 'package:image_picker/image_picker.dart';
@@ -106,13 +107,15 @@ class _EditProfileState extends State<EditProfile> {
                   if (_formKey.currentState!.validate()) {
                     final provider = context.read<ProfileProvider>();
 
-                    provider.updateProfile(
-                      widget.id,
-                      _nameController.text,
-                      _bioController.text,
-                      _coverPhotoController.text,
-                      _profilePhotoController.text,
+                    final updatedProfile = Profile(
+                      id: widget.id,
+                      name: _nameController.text,
+                      bio: _bioController.text,
+                      coverPhoto: _coverPhotoController.text,
+                      profilePhoto: _profilePhotoController.text,
                     );
+
+                    provider.updateProfile(updatedProfile);
 
                     if (mounted) {
                       Navigator.pop(context, true);
