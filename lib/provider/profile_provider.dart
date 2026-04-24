@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import '../models/profile.dart';
 
 class ProfileProvider with ChangeNotifier {
-  final String baseUrl = 'http://172.20.10.3:8000/api/profiles';
+  final String baseUrl = 'http://172.20.10.2:8000/api/profiles';
 
   List<Profile> _profiles = [];
   List<Profile> get profiles => _profiles;
@@ -56,7 +56,8 @@ class ProfileProvider with ChangeNotifier {
     }
   }
 
-  Future<void> updateProfile(int id, Profile updatedProfile) async {
+  Future<void> updateProfile(Profile updatedProfile) async {
+    int? id = updatedProfile.id;
     final response = await http.put(
       Uri.parse('$baseUrl/$id'),
       headers: {'Content-Type': 'application/json'},
