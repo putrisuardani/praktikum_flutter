@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:praktikum_flutter/screens/list_profile.dart';
+import 'package:praktikum_flutter/screens/login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: ListProfile(),
+      home: Login(),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:praktikum_flutter/models/profile.dart';
 import 'package:praktikum_flutter/screens/detail_profile.dart';
+import 'package:praktikum_flutter/screens/login.dart';
 
 class ListProfile extends StatefulWidget {
   const ListProfile({super.key});
@@ -39,7 +40,22 @@ class _ListProfileState extends State<ListProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('List Profile')),
+      appBar: AppBar(
+        title: Text('List Profile'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () {
+              // kembali ke login page
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => Login()),
+                (route) => false,
+              );
+            },
+          ),
+        ],
+      ),
       body: ListView.builder(
         itemCount: profiles.length,
         itemBuilder: (context, index) {
